@@ -6,6 +6,7 @@
 #include <stdlib.h>	/*標準ライブラリ */
 #include <time.h>	/*時刻ライブラリ */
 
+/* main関数 */
 int main(void)
 {
 	int movex, movey, gold, ex[2], ey[2], field[5][5], i, j, getm, direction, scanp;
@@ -14,11 +15,11 @@ int main(void)
 	/*	gold	お金	自分の持っている金額 */
 	/*	ex[]	X座標	怪物のいるX座標 */
 	/*	ey[]	Y座標	怪物のいるY座標 */
-	/*	field[][]	フィールド	状態フラグが入っている配列変数 */
+	/*	field[][]	フィールドマス目の状態フラグが入っている配列変数 */
 	/*	i	カウンタ	while文でのカウントが入る変数 */
 	/*	j	カウンタ	while文でのカウントが入る変数 */
-	/*	getm	カウンタ	while文でのカウントが入る変数 */
-	/*	direction	入力	移動方向の入力が入る変数 */
+	/*	getm	お金	拾った額が入る変数 */
+	/*	direction入力	移動方向の入力が入る変数 */
 	/*	scanp	入力	探索するかの有無の入力が入る変数 */
 
 	/* 乱数系列の変更(rand関数の初期化) */
@@ -93,10 +94,18 @@ int main(void)
 		}
 
 		/* フィールド外に出てしまった場合は座標を修正する */
-		if (movex < 0) movex = 0;	/* 左に移動しすぎた */
-		if (movey < 0) movey = 0;	/* 上に移動しすぎた */
-		if (movex > 4) movex = 4;	/* 右に移動しすぎた */
-		if (movey > 4) movey = 4;	/* 下に移動しすぎた */
+		if (movex < 0) {
+			movex = 0;	/* 左に移動しすぎた */
+		}
+		if (movey < 0) {
+			movey = 0;	/* 上に移動しすぎた */
+		}
+		if (movex > 4) {
+			movex = 4;	/* 右に移動しすぎた */
+		}
+		if (movey > 4) {
+			movey = 4;	/* 下に移動しすぎた */
+		}
 
 		/* フィールドのマス目の探索 */
 		if (movex != 0 || movey != 0) {	/* スタート地点(0,0)以外なら調査可能 */
