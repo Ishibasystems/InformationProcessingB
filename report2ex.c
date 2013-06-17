@@ -1,10 +1,12 @@
-/* 情報処理B report2.c */
-/* 課題ぶっぱスタイル (BSD/Allman) */
-/* 2013.06.16, TDUCC, 藤代晴嵐 */
+/* 情報処理B report2ex.c */
+/* 課題ぶっぱスタイル (BSD/Allman Style) */
+/* VisualStudio2012 GCC4.2.1 Clang3.1 で動作確認 */
+/* 2013.06.16, 10RU004, 石橋祥太 */
 
 #include <stdio.h>	/*標準入出力関数 */
 #include <stdlib.h>	/*標準ライブラリ */
-#include <time.h>	/*時刻ライブラリ */
+#include <string.h>	/*文字列ライブラリ */
+#include <time.h>	/*時刻系ライブラリ */
 
 /* 定数宣言 */
 #define XMAX 5	/* フィールドのX大きさ */
@@ -18,12 +20,12 @@ void input(char *, long);
 int main(int argc, char *argv[])
 {
 	char movex = 0, movey = 0, ex[2], ey[2], field[XMAX * YMAX] = {0}, i, j, getm, direc[2] = {0}, scanp[2] = {0};
-	short gold;
+	short gold = 0;
 	/*	movex	X座標	自分のいるX座標 */
 	/*	movey	Y座標	自分のいるY座標 */
 	/*	ex[]	X座標	怪物のいるX座標 */
 	/*	ey[]	Y座標	怪物のいるY座標 */
-	/*	field[]	フィールド	状態フラグが入っている配列変数 */
+	/*	field[]	フィールド状態フラグが入っている配列変数 */
 	/*	i	カウンタ	カウントが入る変数 */
 	/*	j	カウンタ	カウントが入る変数 */
 	/*	getm	お金	拾った額が入る変数 */
@@ -43,9 +45,8 @@ int main(int argc, char *argv[])
 	for(;;)	/* ゲーム開始(無限ループ) */
 	{
 		/* フィールドを表示する */
-		for (i = 0; i < YMAX; printf("\n\0%d", i++))
-			for (j = 0; j < XMAX; j++)
-				printf((i == movey && j == movex) * 4 + "%2d\0 1", field[j + i * XMAX]);	/* フィールドの状態を表示していく */
+		for (i = 0; i < YMAX; printf("\n") && i++)	/* フィールドの状態を表示していく */
+			for (j = 0; j < XMAX; j++ == movex && i == movey ? printf(" 1") : printf("%2d", field[j + i * XMAX - 1]));
 
 		/* 移動方向を入力させる(direc) */
 		printf("\nInput, where you going? (Up:1, Down:2, Left:3, Right:4): ");
@@ -71,6 +72,7 @@ int main(int argc, char *argv[])
 			input(scanp, 2);
 
 			if (scanp[0] == '1')	/* 調査する */
+			{
 				if ((movex == ex[0] && movey == ey[0]) || (movex == ex[1] && movey == ey[1]))	/* 自分の座標が怪物0 or 怪物1の座標と同じ→怪物と遭遇 */
 				{	/* 怪物に遭遇 */
 					gold = gold / 2 + gold % 2;	/* goldを半分失う、切り上げ */
@@ -82,6 +84,7 @@ int main(int argc, char *argv[])
 					printf("You get %d gold.\n\n", getm = rand() % 8 + 2);	/* 得られるgoldを選択(2-9の乱数生成)、表示 */
 					gold += field[movex + movey * XMAX] = getm;	/* マス目の状態を得られたgoldにし、goldに得られたgoldを追加する */
 				}
+			}
 		}
 
 		/* ゴールに着いた判定 */
